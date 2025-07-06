@@ -2,7 +2,7 @@
 from pymongo import MongoClient
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://zimal_code:KS6W6g5r0vZslvw3@cluster0.nlm2hd4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("YOUR_MONGODB_URI_HERE"")
 db = client["FitPulse"]
 
 # Clear collections
