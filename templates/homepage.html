@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FitTracker - Your Fitness Journey Starts Here</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7f6;
+      color: #145c66;
+      line-height: 1.6;
+    }
+
+    a {
+      color: #1f7a8c;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #0a3d62;
+    }
+
+    header {
+      background: #1f7a8c;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(20, 92, 102, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+    }
+
+    nav a {
+      margin-left: 25px;
+      font-size: 1rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+      gap: 30px;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-text h2 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      color: #145c66;
+    }
+
+    .hero-text p {
+      font-size: 1.15rem;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background-color: #1f7a8c;
+      color: white;
+      padding: 15px 35px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 6px 12px rgba(31, 122, 140, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #145c66;
+      box-shadow: 0 8px 18px rgba(20, 92, 102, 0.6);
+    }
+
+    .hero-image {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(31, 122, 140, 0.25);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Features Section */
+    .features {
+      max-width: 1200px;
+      margin: 60px auto 80px auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .feature-box {
+      background: white;
+      flex: 1;
+      min-width: 260px;
+      border-radius: 15px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 20px rgba(31, 122, 140, 0.12);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(31, 122, 140, 0.25);
+    }
+
+    .feature-icon {
+      font-size: 50px;
+      color: #1f7a8c;
+      margin-bottom: 15px;
+    }
+
+    .feature-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: #145c66;
+    }
+
+    .feature-desc {
+      font-size: 1rem;
+      color: #34495e;
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    footer {
+      background: #145c66;
+      color: white;
+      text-align: center;
+      padding: 25px 20px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-text, .hero-image {
+        min-width: 100%;
+      }
+      .features {
+        flex-direction: column;
+        gap: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>FitTracker</h1>
+    <nav>
+         <a href="{{ url_for('homepage') }}">Home</a>
+       <a href="{{ url_for('register') }}">Register</a>
+      <a href="{{ url_for('login') }}">Login</a>
+</nav>
+
+    </nav>
+  </header>
+
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-text">
+      <h2>Your Fitness Journey Starts Here</h2>
+      <p>Track your workouts, monitor your progress, and reach your fitness goals with FitTracker — the ultimate tool for fitness enthusiasts and beginners alike.</p>
+      <a href="{{ url_for('register') }}" class="btn-primary" role="button">Get Started</a>
+
+    </div>
+    <div class="hero-image">
+      <img src="static/running-is-one-of-the-best-ways-to-stay-fit-royalty-free-image-1036780592-1553033495.avif" />
+    </div>
+  </section>
+
+  <section class="features" aria-label="Features">
+    <div class="feature-box" tabindex="0">
+      <div class="feature-icon">🏋️‍♂️</div>
+      <h3 class="feature-title">Personalized Plans</h3>
+      <p class="feature-desc">Create workout routines tailored to your goals, fitness level, and preferences.</p>
+    </div>
+    <div class="feature-box" tabindex="0">
+      <div class="feature-icon">📊</div>
+      <h3 class="feature-title">Progress Tracking</h3>
+      <p class="feature-desc">Visualize your improvements with easy-to-read graphs and stats.</p>
+    </div>
+    <div class="feature-box" tabindex="0">
+      <div class="feature-icon">🤝</div>
+      <h3 class="feature-title">Community Support</h3>
+      <p class="feature-desc">Join a vibrant community for motivation, tips, and challenges.</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 FitTracker | Made with 💪 for your fitness success
+  </footer>
+
+</body>
+</html>

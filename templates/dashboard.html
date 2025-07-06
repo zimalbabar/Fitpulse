@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health Entry - FitPulse</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .left, .right {
+      flex: 1 1 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      min-width: 0;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #0f4c5c;
+      font-size: 26px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1.5px solid #ccc;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #0f4c5c;
+      outline: none;
+      box-shadow: 0 0 6px rgba(15, 76, 92, 0.4);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button[type="submit"] {
+      background-color: #0f4c5c;
+      color: white;
+      font-weight: bold;
+      border: none;
+      transition: background 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0b3945;
+    }
+
+    .box, .suggestion-box {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      font-size: 15px;
+    }
+
+    .box {
+      text-align: center;
+      background-color: #f1f8f9;
+    }
+
+    .suggestion-box.history {
+      background-color: #eaf6f6;
+    }
+
+    .suggestion-box.today {
+      background-color: #f1f7ff;
+    }
+
+    h3 {
+      color: #0f4c5c;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+ 
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="left">
+      <form method="POST">
+        <h2>Daily Health Entry</h2>
+        <input type="number" name="steps" placeholder="Steps" required value="{{ request.form.get('steps', '') }}" />
+        <input type="number" name="sleep" placeholder="Sleep Hours" step="0.1" required value="{{ request.form.get('sleep', '') }}" />
+        <input type="number" name="calories" placeholder="Calories Burned" required value="{{ request.form.get('calories', '') }}" />
+        <input type="number" name="heart_rate" placeholder="Heart Rate" required value="{{ request.form.get('heart_rate', '') }}" />
+        <input type="number" name="height" step="0.1" placeholder="Height (cm)" required value="{{ request.form.get('height', '') }}" />
+        <input type="number" name="weight" step="0.1" placeholder="Weight (kg)" required value="{{ request.form.get('weight', '') }}" />
+        <input type="number" name="water" placeholder="Water Intake (liters)" step="0.1" value="{{ request.form.get('water', '') }}" />
+
+        <select name="mood">
+          <option value="">Mood Today</option>
+          <option value="happy" {% if request.form.get('mood') == 'happy' %}selected{% endif %}>😊 Happy</option>
+          <option value="neutral" {% if request.form.get('mood') == 'neutral' %}selected{% endif %}>😐 Neutral</option>
+          <option value="stressed" {% if request.form.get('mood') == 'stressed' %}selected{% endif %}>😟 Stressed</option>
+        </select>
+
+        <textarea name="notes" placeholder="Any notes or symptoms..." rows="3">{{ request.form.get('notes', '') }}</textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div class="right">
+      <div class="box">
+        🧠 <strong>Fitness Prediction:</strong><br />
+        <span style="font-size: 24px; color: #00796b; font-weight: bold;">
+          Predicted Fitness Score: {{ prediction }}
+        </span>
+      </div>
+
+      <div class="box" style="margin-top: 20px;">
+        <strong>💡 BMI:</strong> {{ bmi if bmi is not none else "Not available yet" }} <br>
+        <strong>📊 Category:</strong> {{ bmi_status if bmi_status else "Unknown" }}
+      </div>
+
+      <h3 style="font-size: 24px; font-weight: 700; color: #1077b2; margin: 30px 0 16px 0; text-align: center;">
+        Your Personalized Exercise Plan
+      </h3>
+
+      <form method="POST" action="{{ url_for('save_selected_workouts') }}"
+            style="background-color: #ffffff; color: #111111; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; margin: 0 auto 40px auto; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);">
+
+        {% if exercise_plan %}
+          {% for item in exercise_plan %}
+  <div class="exercise-item">
+     <input type="checkbox"
+           name="selected_workouts"
+           value="{{ item }}"
+           id="workout_{{ loop.index }}">  
+    <label for="workout_{{ loop.index }}">{{ item }}</label> 
+   
+  </div>
+{% endfor %}
+
+
+          <button type="submit" style="margin-top: 24px; padding: 14px 20px; background-color: #007bff; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 18px; width: 100%; cursor: pointer; transition: background-color 0.3s ease;"
+                  onmouseover="this.style.backgroundColor='#0056b3'"
+                  onmouseout="this.style.backgroundColor='#007bff'">
+            Save Selected Exercises
+          </button>
+        {% else %}
+          <p style="text-align: center; color: #555; font-size: 18px; margin: 20px 0;">
+            📅 Workout PLAN<br>
+            Enter your health data above to get personalized suggestions.
+          </p>
+        {% endif %}
+
+      </form>
+
+      
+    </div>
+<a href="{{ url_for('workout_progress') }}" style="display: inline-block; margin-top: 20px; color: #007bff;">
+        View / Update Workout Progress
+      </a>
+
+
+  </div>
+</body>
+</html>
