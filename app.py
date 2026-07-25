@@ -10,7 +10,7 @@ from functions import generate_exercise_plan,bmi_category
 from pymongo.errors import DuplicateKeyError
 
 
-client = MongoClient("YOUR_MONGODB_URI_HERE")
+client = MongoClient(os.getenv("MONGODB_URI"))
 
 db = client["FitPulse"]
 
